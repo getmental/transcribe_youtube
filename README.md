@@ -1,4 +1,4 @@
-# transcribe_youtube
+# Transcribe YouTube
 
 Get a text transcript of a YouTube video via the CLI
 
