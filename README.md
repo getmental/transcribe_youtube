@@ -58,9 +58,11 @@ If you look at the history of physics, physics has been a fantastic export field
 This will put the video in `./media/{video_id}.mp4`, the audio in `./media/{video_id}.mp3`, and the transcript in `./media/{video_id}.txt`. The `./media` dir is gitignored, but the script does not clean up the video and audio artifacts, so just be aware that it's taking up disk space
 
 # Implementation Details
-Uses [`pytube`](https://github.com/pytube/pytube) to install the YouTube video
-Uses [`ffmpeg`](https://ffmpeg.org) to extract the audio
-Uses [`whisper`](https://github.com/openai/whisper) API to extract the transcript
+Uses [`pytube`](https://github.com/pytube/pytube) to install the YouTube video.
+
+Uses [`ffmpeg`](https://ffmpeg.org) to extract the audio.
+
+Uses [`whisper`](https://github.com/openai/whisper) API to extract the transcript.
 
 # Feature Requests
 - Accept multiple video ids at once, and process them all in parallel.
