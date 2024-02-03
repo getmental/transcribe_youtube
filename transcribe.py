@@ -1,8 +1,10 @@
 import argparse
 from pydub import AudioSegment
 from pytube import YouTube
+from concurrent.futures import ThreadPoolExecutor
 import os
 import openai
+import concurrent.futures
 
 from dotenv import load_dotenv, find_dotenv
 
@@ -47,9 +49,10 @@ def transcribe_audio(audio_path, output_transcription_path):
 
         print(f"Broke file into {len(chunks)} chunks")
 
-        # and then transcribe each chunk
         transcriptions = []
-        for i, chunk in enumerate(chunks):
+
+        def transcribe_chunk(args):
+            i, chunk = args
             audio_file_name = os.path.splitext(os.path.basename(audio_path))[0]
             chunk_file_path = os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
@@ -59,10 +62,15 @@ def transcribe_audio(audio_path, output_transcription_path):
             chunk.export(chunk_file_path, format="mp3")
             file = open(chunk_file_path, "rb")
             transcription_response = openai.Audio.transcribe("whisper-1", file)
-            transcriptions.append(transcription_response["text"])
             print(f"Finished transcribing chunk {i}")
             file.close()
             os.remove(chunk_file_path)
+            return transcription_response["text"]
+
+        with ThreadPoolExecutor() as executor:
+            transcriptions = list(executor.map(transcribe_chunk, enumerate(chunks)))
+
+        print("transcriptions", transcriptions)
 
         # then combine the transcriptions into one file
         transcription = " ".join(transcriptions)
