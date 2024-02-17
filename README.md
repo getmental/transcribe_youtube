@@ -89,6 +89,13 @@ GPT4's ANSWER:
 3. **Workflow Enhancement with LLMs**: Wolfram outlines a practical workflow where LLMs can bridge the gap between natural language input and computational language output. This process entails a user starting with a vague idea, articulating it in natural language, and using an LLM to generate a computational representation in a language like Wolfram Language. This representation can then be refined for accuracy, serving as a basis for further computational work. Wolfram emphasizes this as a significant advancement in making computational tasks more accessible and intuitive for users, while also noting the potential for LLMs in education and solving complex problems like physics word problems through improved understanding of natural language descriptions.
 ```
 
+### Examples of things you could ask
+- Summarize the key points in the video
+- Translate the transcript into different languages
+- Extract keywords or topics discussed in the video
+- Create a list of action items or takeaways from the video
+
+
 # Implementation Details
 Uses [`pytube`](https://github.com/pytube/pytube) to install the YouTube video.
 
