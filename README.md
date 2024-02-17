@@ -102,9 +102,3 @@ Uses [`whisper`](https://github.com/openai/whisper) API to extract the transcrip
 - OpenAI's Whisper API has a limit of 25MB, which, if hit, means we break up into 10 minute audio chunks, then concat the transcripts. Feature requests here:
   - Do this in a way that guarantees we don't step over a word-boundary on the cut
   - Do each of the chunks in parallel (would speed up the transcription step for longer videos by a lot)
-
-- Additional CLI flags to perform various operations on the transcript using GPT:
-  - Summarize the key points in the video
-  - Translate the transcript into different languages
-  - Extract keywords or topics discussed in the video
-  - Create a list of action items or takeaways from the video
