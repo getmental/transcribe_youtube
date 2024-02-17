@@ -59,7 +59,7 @@ This will put the video in `./media/{video_id}.mp4`, the audio in `./media/{vide
 
 ## Asking a question about the transcript
 
-Pass a second argument in quotes, and the output will finish by answering your question, using the transcript in the context to GPT4. You must have OPENAI_API_KEY in your environment.
+Pass a second argument in quotes, and the output will finish by answering your question, using the transcript in the context to GPT4.
 
 ```
 python3 transcribe.py pdPYJKqfiqc "Briefly summarize the top three key insights from the video"
