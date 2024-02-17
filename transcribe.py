@@ -78,7 +78,7 @@ def transcribe_audio(audio_path, output_transcription_path):
             )
             chunk.export(chunk_file_path, format="mp3")
             file = open(chunk_file_path, "rb")
-            transcription_response = client.audio.transcribe("whisper-1", file)
+            transcription_response = client.audio.transcriptions.create(model="whisper-1", file=file)
             print(f"Finished transcribing chunk {i}")
             file.close()
             os.remove(chunk_file_path)
@@ -93,7 +93,7 @@ def transcribe_audio(audio_path, output_transcription_path):
         transcription = " ".join(transcriptions)
     else:
         file = open(audio_path, "rb")
-        transcription_response = client.audio.transcribe("whisper-1", file)
+        transcription_response = client.audio.transcriptions.create(model="whisper-1", file=file)
         transcription = transcription_response.text
         file.close()
 
@@ -129,7 +129,7 @@ def main():
     if question is None or question == "":
         return
 
-    prompt = """
+    prompt = f"""
 TITLE: {video_title}
 TRANSCRIPT:
 ```
@@ -137,7 +137,7 @@ TRANSCRIPT:
 ```
 
 {question}
-""".trim()
+""".strip()
     
     response = get_completion(prompt)
     print("\n\n\n")
