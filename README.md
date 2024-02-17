@@ -67,6 +67,28 @@ python3 transcribe.py pdPYJKqfiqc "Briefly summarize the top three key insights 
 
 This will output GPT4's answer to your question, at the end of the output logs from the script.
 
+```
+Starting video download.
+Downloading Dr Stephen Wolfram says THIS about ChatGPT, Natural Language and Physics
+Download completed!
+Starting audio extraction.
+Audio extraction completed.
+Starting audio transcription.
+Audio transcription completed at path /Users/tsheaff/Code/getmental/transcribe_youtube/media/pdPYJKqfiqc.txt
+FINAL TRANSCRIPT STARTING HERE
+
+If you look at the history of physics, physics has been a fantastic export field that's populated molecular biology, it's populated quantitative finance, it's populated lots of kinds of things. ... we have a better chance to be able to resolve those kinds of things.
+
+
+QUESTION:  Briefly summarize the top three key insights from the video
+GPT4's ANSWER:
+1. **Interplay Between Physics and LLMs**: Dr. Stephen Wolfram highlights the potential for physics to significantly contribute to understanding and advancing language models, particularly large language models (LLMs) like ChatGPT. He suggests that the methodology and analytical tools developed in physics can help decipher the operational mechanics of LLMs, offering insights into why and how they can produce meaningful, coherent text despite the absence of explicit instructions or examples for every possible query. This could lead to a deeper understanding of the principles underpinning LLM functionality.
+
+2. **LLMs, Language, and Logic**: Wolfram points out that LLMs have an inherent ability to grasp and generate not just syntactically correct sentences but also logically coherent text based on the context provided, akin to human logical reasoning. He draws a parallel between LLMs’ ability to 'discover logic' in constructing language and how Aristotle identified logical structures in rhetoric. This capability surpasses mere syntax adherence, indicating that LLMs can infer some level of semantic grammar or common sense reasoning that guides their text generation.
+
+3. **Workflow Enhancement with LLMs**: Wolfram outlines a practical workflow where LLMs can bridge the gap between natural language input and computational language output. This process entails a user starting with a vague idea, articulating it in natural language, and using an LLM to generate a computational representation in a language like Wolfram Language. This representation can then be refined for accuracy, serving as a basis for further computational work. Wolfram emphasizes this as a significant advancement in making computational tasks more accessible and intuitive for users, while also noting the potential for LLMs in education and solving complex problems like physics word problems through improved understanding of natural language descriptions.
+```
+
 # Implementation Details
 Uses [`pytube`](https://github.com/pytube/pytube) to install the YouTube video.
 
