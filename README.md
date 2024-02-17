@@ -57,6 +57,16 @@ If you look at the history of physics, physics has been a fantastic export field
 
 This will put the video in `./media/{video_id}.mp4`, the audio in `./media/{video_id}.mp3`, and the transcript in `./media/{video_id}.txt`. The `./media` dir is gitignored, but the script does not clean up the video and audio artifacts, so just be aware that it's taking up disk space
 
+## Asking a question about the transcript
+
+Pass a second argument in quotes, and the output will finish by answering your question, using the transcript in the context to GPT4. You must have OPENAI_API_KEY in your environment.
+
+```
+python3 transcribe.py pdPYJKqfiqc "Briefly summarize the top three key insights from the video"
+```
+
+This will output GPT4's answer to your question, at the end of the output logs from the script.
+
 # Implementation Details
 Uses [`pytube`](https://github.com/pytube/pytube) to install the YouTube video.
 
