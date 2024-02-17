@@ -3,7 +3,9 @@ from pydub import AudioSegment
 from pytube import YouTube
 from concurrent.futures import ThreadPoolExecutor
 import os
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 import concurrent.futures
 from openai import OpenAI
 
@@ -76,11 +78,11 @@ def transcribe_audio(audio_path, output_transcription_path):
             )
             chunk.export(chunk_file_path, format="mp3")
             file = open(chunk_file_path, "rb")
-            transcription_response = openai.Audio.transcribe("whisper-1", file)
+            transcription_response = client.audio.transcribe("whisper-1", file)
             print(f"Finished transcribing chunk {i}")
             file.close()
             os.remove(chunk_file_path)
-            return transcription_response["text"]
+            return transcription_response.text
 
         with ThreadPoolExecutor() as executor:
             transcriptions = list(executor.map(transcribe_chunk, enumerate(chunks)))
@@ -91,8 +93,8 @@ def transcribe_audio(audio_path, output_transcription_path):
         transcription = " ".join(transcriptions)
     else:
         file = open(audio_path, "rb")
-        transcription_response = openai.Audio.transcribe("whisper-1", file)
-        transcription = transcription_response["text"]
+        transcription_response = client.audio.transcribe("whisper-1", file)
+        transcription = transcription_response.text
         file.close()
 
     with open(output_transcription_path, "w") as f:

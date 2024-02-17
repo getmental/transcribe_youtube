@@ -1,10 +1,12 @@
 import argparse
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 
 def transcribe_audio(file_path):
     file = open(file_path, "rb")
-    transcription_response = openai.Audio.transcribe("whisper-1", file)
-    return transcription_response["text"]
+    transcription_response = client.audio.transcribe("whisper-1", file)
+    return transcription_response.text
 
 def main():
     parser = argparse.ArgumentParser(description="Transcribe audio files using OpenAI Whisper")
