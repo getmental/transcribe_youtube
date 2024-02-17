@@ -1,6 +1,6 @@
 # Transcribe YouTube
 
-Get a text transcript of a YouTube video via the CLI
+Get a text transcript of a YouTube video via the CLI, then ask an arbitrary question about the transcript to GPT4
 
 # Requirements
 Have `OPENAI_API_KEY` in your shell, or have a `.env` file (gitignored!) with your `OPENAI_API_KEY` in the root dir
