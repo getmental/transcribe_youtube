@@ -5,11 +5,23 @@ from concurrent.futures import ThreadPoolExecutor
 import os
 import openai
 import concurrent.futures
+from openai import OpenAI
 
-from dotenv import load_dotenv, find_dotenv
+client = OpenAI()
 
-_ = load_dotenv(find_dotenv())
-
+def get_completion(prompt, model='gpt-4-0125-preview', timeout=120):
+    chat_completion = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        timeout=timeout
+    )
+    output = chat_completion.choices[0].message.content
+    return output
 
 # run via `python3 src/playground/notebooks/summarizer/summarizer.py aQfeYBa1MTk`
 
@@ -21,7 +33,10 @@ def download_video(url, filename, dir_path="."):
     print(f"Downloading {yt.title}")
     stream.download(output_path=dir_path, filename=filename)
     print("Download completed!")
-    return f"{dir_path}/{filename}"
+    return {
+        'path': f"{dir_path}/{filename}",
+        'title': yt.title,
+    }
 
 
 def extract_audio(video_path, output_audio_path):
@@ -85,12 +100,13 @@ def transcribe_audio(audio_path, output_transcription_path):
     print(f"Audio transcription completed at path {output_transcription_path}")
     print("FINAL TRANSCRIPT STARTING HERE\n")
     print(transcription)
-    return output_transcription_path
+    return transcription
 
 
 def main():
     parser = argparse.ArgumentParser(description="Process YouTube video id.")
     parser.add_argument("video_id", type=str, help="YouTube video id")
+    parser.add_argument("question", type=str, help="Question to ask GPT4 about the transcript at the end")
     args = parser.parse_args()
 
     # if the video_id is the full youtube url, parse out just the video id
@@ -99,11 +115,33 @@ def main():
         video_id = video_id.split("=")[1]
 
     dir = os.path.dirname(os.path.realpath(__file__)) + "/media"
-    video_path = download_video(
+    video_response = download_video(
         f"https://www.youtube.com/watch?v={video_id}", f"{video_id}.mp4", dir
     )
+    video_path = video_response['path']
+    video_title = video_response['title']
     audio_path = extract_audio(video_path, f"{dir}/{video_id}.mp3")
-    transcribe_audio(audio_path, f"{dir}/{video_id}.txt")
+    transcript = transcribe_audio(audio_path, f"{dir}/{video_id}.txt")
+
+    question = args.question
+    if question is None or question == "":
+        return
+
+    prompt = """
+TITLE: {video_title}
+TRANSCRIPT:
+```
+{transcript}
+```
+
+{question}
+""".trim()
+    
+    response = get_completion(prompt)
+    print("\n\n\n")
+    print("QUESTION: ", question)
+    print("GPT4's ANSWER:")
+    print(response)
 
 
 if __name__ == "__main__":
