@@ -9,9 +9,12 @@ client = OpenAI()
 import concurrent.futures
 from openai import OpenAI
 
-client = OpenAI()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-def get_completion(prompt, model='gpt-4-0125-preview', timeout=120):
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+
+def get_completion(prompt, model="gpt-4o-2024-05-13", timeout=120):
     chat_completion = client.chat.completions.create(
         model=model,
         messages=[
@@ -20,10 +23,11 @@ def get_completion(prompt, model='gpt-4-0125-preview', timeout=120):
                 "content": prompt,
             }
         ],
-        timeout=timeout
+        timeout=timeout,
     )
     output = chat_completion.choices[0].message.content
     return output
+
 
 # run via `python3 src/playground/notebooks/summarizer/summarizer.py aQfeYBa1MTk`
 
@@ -36,8 +40,8 @@ def download_video(url, filename, dir_path="."):
     stream.download(output_path=dir_path, filename=filename)
     print("Download completed!")
     return {
-        'path': f"{dir_path}/{filename}",
-        'title': yt.title,
+        "path": f"{dir_path}/{filename}",
+        "title": yt.title,
     }
 
 
@@ -59,10 +63,7 @@ def transcribe_audio(audio_path, output_transcription_path):
         # if it is, then we need to split it into 10 minute chunks
         audio_segment = AudioSegment.from_mp3(audio_path)
         ten_minutes = 10 * 60 * 1000
-        chunks = [
-            audio_segment[i : i + ten_minutes]
-            for i in range(0, len(audio_segment), ten_minutes)
-        ]
+        chunks = [audio_segment[i : i + ten_minutes] for i in range(0, len(audio_segment), ten_minutes)]
 
         print(f"Broke file into {len(chunks)} chunks")
 
@@ -117,11 +118,9 @@ def main():
         video_id = video_id.split("=")[1]
 
     dir = os.path.dirname(os.path.realpath(__file__)) + "/media"
-    video_response = download_video(
-        f"https://www.youtube.com/watch?v={video_id}", f"{video_id}.mp4", dir
-    )
-    video_path = video_response['path']
-    video_title = video_response['title']
+    video_response = download_video(f"https://www.youtube.com/watch?v={video_id}", f"{video_id}.mp4", dir)
+    video_path = video_response["path"]
+    video_title = video_response["title"]
     audio_path = extract_audio(video_path, f"{dir}/{video_id}.mp3")
     transcript = transcribe_audio(audio_path, f"{dir}/{video_id}.txt")
 
@@ -138,7 +137,7 @@ TRANSCRIPT:
 
 {question}
 """.strip()
-    
+
     response = get_completion(prompt)
     print("\n\n\n")
     print("QUESTION: ", question)
